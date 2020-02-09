@@ -4,6 +4,7 @@ const graphqlHTTP = require('express-graphql');
 const app = express();
 const mongoose = require('mongoose');
 const schema = require('./schemas');
+const port = process.env.PORT;
 
 app.use(json());
 app.use('/graphql', graphqlHTTP({
@@ -15,5 +16,5 @@ mongoose.connect('mongodb+srv://grapher:rapidops123456@grapher-pwytq.mongodb.net
 // mongoose.connect('mongodb://localhost:27017/graph-blog', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once('open', () => {
     console.log('MongoDB Connected');
-    app.listen(8080, () => console.log('graphing on port 8080'));
+    app.listen(port, () => console.log(`graphing on port ${port}`));
 });
