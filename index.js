@@ -7,6 +7,7 @@ const schema = require('./schemas');
 const port = process.env.PORT;
 
 app.use(json());
+app.get('/', (req, res) => res.send({ message: 'graphql server is running' }));
 app.use('/graphql', graphqlHTTP({
     schema,
     graphiql: true
