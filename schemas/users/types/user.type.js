@@ -1,7 +1,10 @@
+const PostResolver = require('../../posts/post.resolver');
+const PostType = require('../../posts/types/post.type');
 const {
     GraphQLObjectType,
     GraphQLString,
-    GraphQLFloat
+    GraphQLFloat,
+    GraphQLList,
 } = require('graphql');
 
 module.exports = new GraphQLObjectType({
@@ -11,6 +14,10 @@ module.exports = new GraphQLObjectType({
         Email: { type: GraphQLString },
         Phone: { type: GraphQLFloat },
         DOB: { type: GraphQLString },
+        Posts: {
+            type: GraphQLList(PostType),
+            resolve: PostResolver.getPosts
+        },
         CreatedAt: { type: GraphQLFloat },
         UpdatedAt: { type: GraphQLFloat }
     })
