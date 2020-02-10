@@ -1,3 +1,5 @@
+const UserType = require('../../users/types/user.type');
+const UserResolver = require('../../users/user.resolver');
 const PostType = require('../../posts/types/post.type');
 const PostResolver = require('../../posts/post.resolver');
 
@@ -11,9 +13,9 @@ module.exports = new GraphQLObjectType({
     name: 'Comment',
     fields: () => ({
         Comment: { type: GraphQLString },
-        Post: {
-            type: PostType,
-            resolve: PostResolver.getPost
+        CommentedBy: {
+            type: UserType,
+            resolve: UserResolver.getProfile
         },
         CreatedAt: { type: GraphQLFloat },
         UpdatedAt: { type: GraphQLFloat }

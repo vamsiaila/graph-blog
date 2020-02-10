@@ -4,7 +4,7 @@ const graphqlHTTP = require('express-graphql');
 const app = express();
 const mongoose = require('mongoose');
 const schema = require('./schemas');
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 
 app.use(json());
 app.get('/', (req, res) => res.send({ message: 'graphql server is running like a cheetah' }));
