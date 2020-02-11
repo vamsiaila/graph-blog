@@ -6,6 +6,7 @@ class UserResolver {
 
     static async register(parent, args) {
         console.info(args);
+        return args.Register;
     }
 
     static async login(parent,  args) {
