@@ -7,6 +7,10 @@ class UserResolver {
     static async register(parent, args) {
         console.info(args);
     }
+
+    static async login(parent,  args) {
+        console.info(args);
+    }
 }
 
 module.exports = UserResolver;

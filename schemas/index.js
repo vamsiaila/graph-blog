@@ -9,7 +9,8 @@ const RootQuery = new GraphQLObjectType({
         ...User.query,
         ...Post.query,
         ...Comment.query
-    }
+    },
+    description: 'These are query schemas where you will get data'
 });
 
 const RootMutation = new GraphQLObjectType({
@@ -18,7 +19,8 @@ const RootMutation = new GraphQLObjectType({
         ...User.mutation,
         ...Post.mutation,
         ...Comment.mutation
-    }
+    },
+    description: 'These are mutation schemas where you will create, update and delete data'
 });
 
 module.exports = new GraphQLSchema({
