@@ -5,13 +5,13 @@ const { GraphQLString, GraphQLList } = require('graphql');
 module.exports = {
     Posts: {
         type: GraphQLList(PostType),
-        args: { Poster: { type: GraphQLString } },
+        args: { PostedBy: { type: GraphQLString, description: 'UserId' } },
         description: 'Get Posts',
         resolve: PostResolver.getPosts
     },
     Post: {
         type: PostType,
-        args: { PostId: { type: GraphQLString } },
+        args: { PostId: { type: GraphQLString, description: 'PostId' } },
         description: 'Get Post',
         resolve: PostResolver.getPost
     }
