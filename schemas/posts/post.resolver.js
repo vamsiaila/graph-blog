@@ -1,6 +1,10 @@
 class PostResolver {
     static async getPosts(parent, args, request) {
-
+        return [
+            {
+                Title:'something'
+            }
+        ]
     }
     static async getPost(parent, args, request) {
 
