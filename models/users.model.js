@@ -10,7 +10,7 @@ class UsersModel {
                 Name: { type: String, default: null },
                 Email: { type: String, default: null },
                 Phone: { type: Number, default: null },
-                DOB: { type: Date, default: null },
+                DOB: { type: String, default: null },
                 Password: { type: String, require: true },
                 CreatedAt: { type: Number, default: Date.now() },
                 UpdatedAt: { type: Number, default: Date.now() }

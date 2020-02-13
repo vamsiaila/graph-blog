@@ -7,7 +7,7 @@ const { GraphQLNonNull } = require('graphql');
 module.exports = {
     Register: {
         type: UserType,
-        args: { Register: { type: GraphQLNonNull(RegisterInput) } },
+        args: { UserData: { type: GraphQLNonNull(RegisterInput) } },
         description: 'Register User',
         resolve: UserResolver.register
     },

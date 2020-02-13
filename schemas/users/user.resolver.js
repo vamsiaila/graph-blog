@@ -1,12 +1,28 @@
+const UserModel = require('../../models/users.model');
+
 class UserResolver {
-    static async getProfile(parent, args, request) {
-        console.info(request.headers);
-        throw new Error('all is well');
+    static async getProfile(parent, {Email, Id}, request) {
+        const query = {};
+        if (Email) {
+            query.Email = Email;
+        }
+        if (Id) {
+            query._id = Id;
+        }
+        const User = await new UserModel().users.findOne(query, {Password: 0, _id: 0}).lean().exec();
+        if (!User) {
+            throw new Error('User not exist');
+        }
+        return User;
     }
 
-    static async register(parent, args) {
-        console.info(args);
-        return args.Register;
+    static async register(parent, { UserData }) {
+            const exist = await new UserModel().users.findOne({ $or: [{ Email: UserData.Email }, { Phone: UserData.Phone }] }).lean().exec();
+            if(exist) {
+                throw new Error('Email or Phone already exist')
+            }
+            await new UserModel().users(UserData).save();
+            return UserData;
     }
 
     static async login(parent,  args) {
