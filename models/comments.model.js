@@ -10,8 +10,8 @@ class  CommentsModel{
                 Comment: { type: String },
                 PostId: { type: String },
                 CommentedBy: { type: String },
-                CreatedAt: { type: Number, default: Date.now() },
-                UpdatedAt: { type: Number, default: Date.now() }
+                CreatedAt: { type: Number, default: Date.now },
+                UpdatedAt: { type: Number, default: Date.now }
             });
             this.comments = mongoose.model('Comment', this.__commentSchema);
         }

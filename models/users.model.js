@@ -12,8 +12,8 @@ class UsersModel {
                 Phone: { type: Number, default: null },
                 DOB: { type: String, default: null },
                 Password: { type: String, require: true },
-                CreatedAt: { type: Number, default: Date.now() },
-                UpdatedAt: { type: Number, default: Date.now() }
+                CreatedAt: { type: Number, default: Date.now },
+                UpdatedAt: { type: Number, default: Date.now }
             });
             this.users = mongoose.model('User', this.__userSchema);
         }

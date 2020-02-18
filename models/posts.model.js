@@ -10,8 +10,8 @@ class PostsModel {
                 Title: { type: String },
                 Body: { type: String },
                 PostedBy: { type: String },
-                CreatedAt: { type: Number, default: Date.now() },
-                UpdatedAt: { type: Number, default: Date.now() }
+                CreatedAt: { type: Number, default: Date.now },
+                UpdatedAt: { type: Number, default: Date.now }
             });
             this.posts = mongoose.model('Post', this.__postSchema);
         }

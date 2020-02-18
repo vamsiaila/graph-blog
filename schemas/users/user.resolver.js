@@ -25,8 +25,12 @@ class UserResolver {
             return UserData;
     }
 
-    static async login(parent,  args) {
-        console.info(args);
+    static async login(parent,  { Credentials }) {
+        const user = await new UserModel().users.findOne({ Email: Credentials.Email, Password: Credentials.Password }).lean().exec();
+        if(!user) {
+            throw new Error('Email or Password is invalid');
+        }
+        return user;
     }
 }
 

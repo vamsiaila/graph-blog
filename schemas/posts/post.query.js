@@ -1,6 +1,6 @@
 const PostType = require('./types/post.type');
 const PostResolver = require('./post.resolver');
-const { GraphQLString, GraphQLList } = require('graphql');
+const { GraphQLString, GraphQLList, GraphQLNonNull } = require('graphql');
 
 module.exports = {
     Posts: {
@@ -11,7 +11,7 @@ module.exports = {
     },
     Post: {
         type: PostType,
-        args: { PostId: { type: GraphQLString, description: 'PostId' } },
+        args: { PostId: { type: GraphQLNonNull(GraphQLString), description: 'PostId' } },
         description: 'Get Post',
         resolve: PostResolver.getPost
     }
