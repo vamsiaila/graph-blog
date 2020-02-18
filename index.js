@@ -13,8 +13,8 @@ app.use('/graphql', graphqlHTTP({
     graphiql: true
 }));
 
-// mongoose.connect('mongodb+srv://grapher:rapidops123456@grapher-pwytq.mongodb.net/graph_blog?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect('mongodb://localhost:27017/graph-blog', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://grapher:rapidops123456@grapher-pwytq.mongodb.net/graph_blog?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect('mongodb://localhost:27017/graph-blog', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once('open', () => {
     console.log('MongoDB Connected');
     app.listen(port, () => console.log(`graphing on port ${port}`));
