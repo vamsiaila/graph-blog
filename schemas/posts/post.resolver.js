@@ -7,7 +7,11 @@ class PostResolver {
         if(Auth !== undefined) {
             await new Authentication(Auth).validate();
         }
-        const posts = await new PostsModel().posts.find({ PostedBy: UserId || PostedBy }).lean().exec();
+        const query = {};
+        if(UserId || PostedBy) {
+            query.PostedBy = UserId || PostedBy;
+        }
+        const posts = await new PostsModel().posts.find(query).lean().exec();
         return posts.map(post => ({ ...post, Id: post._id }));
     }
 
