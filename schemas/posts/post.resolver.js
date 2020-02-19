@@ -26,7 +26,7 @@ class PostResolver {
     static async addPost(parent, { Post, Auth } = {}){
         const auth = new Authentication(Auth);
         await auth.validate();
-        const exist = await new PostsModel().posts.findOne({ Title: Post.title }).lean().exec();
+        const exist = await new PostsModel().posts.findOne({ Title: Post.Title }).lean().exec();
         if(exist) {
             throw new Error('Post with same title already exist');
         }
