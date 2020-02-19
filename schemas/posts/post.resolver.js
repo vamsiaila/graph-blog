@@ -1,4 +1,5 @@
 const PostsModel = require('../../models/posts.model');
+const Authentiication = require('../../shared/authentication');
 
 class PostResolver {
     static async getPosts(parent, { PostedBy }) {
@@ -17,11 +18,14 @@ class PostResolver {
         return post;
     }
 
-    static async addPost(parent, { Post }) {
+    static async addPost(parent, { Post, Auth }){
+        const auth = new Authentiication(Auth);
+        await auth.validate();
         const exist = await new PostsModel().posts.findOne({ Title: Post.title }).lean().exec();
-        if(!exist) {
+        if(exist) {
             throw new Error('Post with same title already exist');
         }
+        Post.PostedBy = auth.getUserId();
         const post = new PostsModel().posts(Post);
         await post.save();
         return post;

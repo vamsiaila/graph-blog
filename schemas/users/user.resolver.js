@@ -2,14 +2,15 @@ const UserModel = require('../../models/users.model');
 const jwt = require('jsonwebtoken');
 
 class UserResolver {
-    static async getProfile(parent, {Email, Id}, request) {
+    static async getProfile(parent, {Email}, request) {
+        console.info(parent);
         const query = {};
         if (Email) {
             query.Email = Email;
         }
-        if (Id) {
-            query._id = Id;
-        }
+        // if (Id) {
+        //     query._id = Id;
+        // }
         const User = await new UserModel().users.findOne(query, {Password: 0, _id: 0}).lean().exec();
         if (!User) {
             throw new Error('User not exist');
