@@ -50,7 +50,7 @@ class PostResolver {
         if(post.PostedBy !== auth.userId) {
             throw new Error('Authorization Error');
         }
-        const exist = await new PostsModel().posts.findOne({ Title: Post.title }).lean().exec();
+        const exist = await new PostsModel().posts.findOne({ Title: Post.Title }).lean().exec();
         if(exist._id !== post._id) {
             throw new Error('Title already exist');
         }
