@@ -4,7 +4,7 @@ const {
 } = require('graphql');
 
 module.exports = new GraphQLObjectType({
-    name: 'Login',
+    name: 'Authorization',
     fields: () => ({
         AccessToken: { type: GraphQLString }
     })
