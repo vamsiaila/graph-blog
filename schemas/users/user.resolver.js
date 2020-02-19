@@ -1,4 +1,5 @@
 const UserModel = require('../../models/users.model');
+const jwt = require('jsonwebtoken');
 
 class UserResolver {
     static async getProfile(parent, {Email, Id}, request) {
@@ -30,7 +31,9 @@ class UserResolver {
         if(!user) {
             throw new Error('Email or Password is invalid');
         }
-        return user;
+        return {
+            AccessToken: jwt.sign({ UserId: user._id }, 'secret')
+        };
     }
 }
 
