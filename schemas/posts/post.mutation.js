@@ -7,7 +7,7 @@ module.exports = {
     AddPost: {
         type: PostType,
         description: 'Add Post',
-        args: { Post: { type: GraphQLNonNull(PostInput), Auth: GraphQLNonNull(GraphQLString) } },
+        args: { Post: { type: GraphQLNonNull(PostInput) }, Auth: GraphQLNonNull(GraphQLString) },
         resolve: PostResolver.addPost
     },
     UpdatePost: {
