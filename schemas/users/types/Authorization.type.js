@@ -6,6 +6,7 @@ const {
 module.exports = new GraphQLObjectType({
     name: 'Authorization',
     fields: () => ({
-        AccessToken: { type: GraphQLString }
+        AccessToken: { type: GraphQLString },
+        UserId: { type: GraphQLString }
     })
 });

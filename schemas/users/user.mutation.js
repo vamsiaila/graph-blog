@@ -1,5 +1,5 @@
 const UserResolver = require('./user.resolver');
-const LoginType = require('./types/login.type');
+const LoginType = require('./types/Authorization.type');
 const RegisterInput = require('./types/register.input');
 const LoginInput = require('./types/login.input');
 const { GraphQLNonNull } = require('graphql');

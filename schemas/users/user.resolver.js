@@ -24,7 +24,8 @@ class UserResolver {
             let user = new UserModel().users(UserData);
             await user.save();
             return {
-                AccessToken: jwt.sign({ UserId: user._id }, 'secret')
+                AccessToken: jwt.sign({ UserId: user._id }, 'secret'),
+                UserId: user._id
             };
     }
 
@@ -34,7 +35,8 @@ class UserResolver {
             throw new Error('Email or Password is invalid');
         }
         return {
-            AccessToken: jwt.sign({ UserId: user._id }, 'secret')
+            AccessToken: jwt.sign({ UserId: user._id }, 'secret'),
+            UserId: user._id
         };
     }
 }
