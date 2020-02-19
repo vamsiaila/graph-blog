@@ -33,7 +33,7 @@ class PostResolver {
         Post.PostedBy = auth.getUserId();
         const post = new PostsModel().posts(Post);
         await post.save();
-        return post;
+        return { Status: true };
     }
 
     static async updatePost(parent, { PostId, Post, Auth } = {}) {
@@ -54,8 +54,7 @@ class PostResolver {
         post.Body = Post.Body;
         post.UpdatedAt = Date.now();
         await post.save();
-        post.Id = post._id;
-        return post;
+        return { Status: true };
     }
 
     static async deletePost(parent, { PostId, Auth } = {}) {
