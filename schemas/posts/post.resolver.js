@@ -3,7 +3,7 @@ const CommentModel = require('../../models/comments.model');
 const Authentication = require('../../shared/authentication');
 
 class PostResolver {
-    static async getPosts({ _id: UserId }, { PostedBy, Auth }) {
+    static async getPosts({ _id: UserId } = {}, { PostedBy, Auth } = {}) {
         if(Auth !== undefined) {
             await new Authentication(Auth).validate();
         }
@@ -11,7 +11,7 @@ class PostResolver {
         return posts.map(post => ({ ...post, Id: post._id }));
     }
 
-    static async getPost({ PostId: CommentedFor }, { PostId, Auth }) {
+    static async getPost({ PostId: CommentedFor } = {}, { PostId, Auth } = {}) {
         if(Auth !== undefined) {
             await new Authentication(Auth).validate();
         }
@@ -23,7 +23,7 @@ class PostResolver {
         return post;
     }
 
-    static async addPost(parent, { Post, Auth }){
+    static async addPost(parent, { Post, Auth } = {}){
         const auth = new Authentication(Auth);
         await auth.validate();
         const exist = await new PostsModel().posts.findOne({ Title: Post.title }).lean().exec();
@@ -36,7 +36,7 @@ class PostResolver {
         return post;
     }
 
-    static async updatePost(parent, { PostId, Post, Auth }) {
+    static async updatePost(parent, { PostId, Post, Auth } = {}) {
         const auth = new Authentication(Auth);
         await auth.validate();
         const post = await new PostsModel().posts.findById(PostId);
@@ -58,7 +58,7 @@ class PostResolver {
         return post;
     }
 
-    static async deletePost(parent, { PostId, Auth }) {
+    static async deletePost(parent, { PostId, Auth } = {}) {
         const auth = new Authentication(Auth);
         await auth.validate();
         const post = await new PostsModel().posts.findById(PostId);
