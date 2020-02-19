@@ -14,6 +14,7 @@ module.exports = new GraphQLObjectType({
         const userType = require('../../users/types/user.type');
         const CommentType = require('../../comments/types/comment.type');
         return {
+            Id: { type: GraphQLString },
             Title: { type: GraphQLString },
             Body: { type: GraphQLString },
             PostedBy: {

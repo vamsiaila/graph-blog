@@ -5,7 +5,7 @@ const UserResolver = require('./user.resolver');
 module.exports = {
   User: {
       type: UserType,
-      args: { Email: { type: GraphQLNonNull(GraphQLString) } },
+      args: { UserId: { type: GraphQLNonNull(GraphQLString) }, Auth: { type: GraphQLNonNull(GraphQLString) } },
       description: 'Get Profile',
       resolve: UserResolver.getProfile
   }

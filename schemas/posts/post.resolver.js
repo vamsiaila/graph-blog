@@ -1,25 +1,30 @@
 const PostsModel = require('../../models/posts.model');
-const Authentiication = require('../../shared/authentication');
+const CommentModel = require('../../models/comments.model');
+const Authentication = require('../../shared/authentication');
 
 class PostResolver {
-    static async getPosts(parent, { PostedBy }) {
-        const query = {};
-        if(PostedBy) {
-            query.PostedBy = PostedBy;
+    static async getPosts({ _id: UserId }, { PostedBy, Auth }) {
+        if(Auth !== undefined) {
+            await new Authentication(Auth).validate();
         }
-        return await new PostsModel().posts.find(query).lean().exec();
+        const posts = await new PostsModel().posts.find({ PostedBy: UserId || PostedBy }).lean().exec();
+        return posts.map(post => ({ ...post, Id: post._id }));
     }
 
-    static async getPost(parent, { PostId }) {
-        const post = await new PostsModel().posts.findById(PostId).lean().exec();
+    static async getPost({ PostId: CommentedFor }, { PostId, Auth }) {
+        if(Auth !== undefined) {
+            await new Authentication(Auth).validate();
+        }
+        const post = await new PostsModel().posts.findById(CommentedFor || PostId).lean().exec();
         if(!post) {
             throw new Error('Post not found');
         }
+        post.Id = PostId;
         return post;
     }
 
     static async addPost(parent, { Post, Auth }){
-        const auth = new Authentiication(Auth);
+        const auth = new Authentication(Auth);
         await auth.validate();
         const exist = await new PostsModel().posts.findOne({ Title: Post.title }).lean().exec();
         if(exist) {
@@ -31,10 +36,15 @@ class PostResolver {
         return post;
     }
 
-    static async updatePost(parent, { PostId, Post }) {
+    static async updatePost(parent, { PostId, Post, Auth }) {
+        const auth = new Authentication(Auth);
+        await auth.validate();
         const post = await new PostsModel().posts.findById(PostId);
         if(!post) {
             throw new Error('Post not found');
+        }
+        if(post.PostedBy !== auth.userId) {
+            throw new Error('Authorization Error');
         }
         const exist = await new PostsModel().posts.findOne({ Title: Post.title }).lean().exec();
         if(exist._id !== post._id) {
@@ -44,12 +54,23 @@ class PostResolver {
         post.Body = Post.Body;
         post.UpdatedAt = Date.now();
         await post.save();
+        post.Id = post._id;
         return post;
     }
 
-    static async deletePost(parent, { PostId }) {
-        await new PostsModel().posts.findByIdAndRemove(PostId).lean().exec();
-        return {};
+    static async deletePost(parent, { PostId, Auth }) {
+        const auth = new Authentication(Auth);
+        await auth.validate();
+        const post = await new PostsModel().posts.findById(PostId);
+        if(!post) {
+            throw new Error('Post not found');
+        }
+        if(post.PostedBy !== auth.userId) {
+            throw new Error('Authorization Error');
+        }
+        await post.remove();
+        await new CommentModel().comments.deleteMany({ PostId: PostId }).lean().exec();
+        return { Status: true };
     }
 }
 

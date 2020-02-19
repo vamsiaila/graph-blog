@@ -5,13 +5,13 @@ const { GraphQLString, GraphQLList, GraphQLNonNull } = require('graphql');
 module.exports = {
     Comments: {
         type: GraphQLList(CommentType),
-        args: { PostId: { type: GraphQLNonNull(GraphQLString) } },
+        args: { PostId: { type: GraphQLNonNull(GraphQLString) }, Auth: { type: GraphQLNonNull(GraphQLString) } },
         description: 'Get Comments For Post',
         resolve: CommentResolver.getComments
     },
     Comment: {
         type: CommentType,
-        args: { CommentId: { type: GraphQLNonNull(GraphQLString) } },
+        args: { CommentId: { type: GraphQLNonNull(GraphQLString) }, Auth: { type: GraphQLNonNull(GraphQLString) } },
         description: 'Get Single Comment',
         resolve: CommentResolver.getComment
     }

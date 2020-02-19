@@ -11,6 +11,7 @@ module.exports = new GraphQLObjectType({
     fields: () => {
         const PostType = require('../../posts/types/post.type');
         return {
+            Id: { type: GraphQLString },
             Name: { type: GraphQLString },
             Email: { type: GraphQLString },
             Phone: { type: GraphQLFloat },

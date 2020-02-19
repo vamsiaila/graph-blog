@@ -1,20 +1,18 @@
 const UserModel = require('../../models/users.model');
+const Authentication = require('../../shared/authentication');
 const jwt = require('jsonwebtoken');
 
 class UserResolver {
-    static async getProfile(parent, {Email}, request) {
-        console.info(parent);
-        const query = {};
-        if (Email) {
-            query.Email = Email;
+    static async getProfile({ PostedBy, CommentedBy }, { UserId, Auth }) {
+        if(Auth !== undefined) {
+            const auth = new Authentication(Auth);
+            await auth.validate();
         }
-        // if (Id) {
-        //     query._id = Id;
-        // }
-        const User = await new UserModel().users.findOne(query, {Password: 0, _id: 0}).lean().exec();
+        const User = await new UserModel().users.findById(UserId || PostedBy || CommentedBy, {Password: 0 }).lean().exec();
         if (!User) {
             throw new Error('User not exist');
         }
+        User.Id = User._id;
         return User;
     }
 
@@ -23,8 +21,11 @@ class UserResolver {
             if(exist) {
                 throw new Error('Email or Phone already exist')
             }
-            await new UserModel().users(UserData).save();
-            return UserData;
+            let user = new UserModel().users(UserData);
+            await user.save();
+            return {
+                AccessToken: jwt.sign({ UserId: user._id }, 'secret')
+            };
     }
 
     static async login(parent,  { Credentials }) {

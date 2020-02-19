@@ -13,13 +13,13 @@ module.exports = {
     UpdatePost: {
         type: PostType,
         description: 'Update Post',
-        args: { PostId: { type: GraphQLNonNull(GraphQLString) }, Post: { type: GraphQLNonNull(PostInput) } },
+        args: { PostId: { type: GraphQLNonNull(GraphQLString) }, Post: { type: GraphQLNonNull(PostInput) }, Auth: { type: GraphQLNonNull(GraphQLString) } },
         resolve: PostResolver.updatePost
     },
     DeletePost: {
         type: PostType,
         description: 'Delete Post',
-        args: { PostId: { type: GraphQLNonNull(GraphQLString) } },
+        args: { PostId: { type: GraphQLNonNull(GraphQLString) }, Auth: { type: GraphQLNonNull(GraphQLString) } },
         resolve: PostResolver.deletePost
     }
 };
