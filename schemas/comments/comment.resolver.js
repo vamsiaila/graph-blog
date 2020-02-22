@@ -1,5 +1,6 @@
 const CommentModel = require('../../models/comments.model');
 const Authentication = require('../../shared/authentication');
+const DataLoader = require('dataloader');
 
 class CommentResolver {
     static async getComments({ _id: Id } = {}, { PostId, Auth } = {}) {
@@ -16,6 +17,9 @@ class CommentResolver {
         const comment = await new CommentModel().comments.findById(CommentId).lean().exec();
         comment.Id = comment._id;
         return comment;
+    }
+    static async loadComments({ Id } = {}) {
+        return await commentLoader.load(Id);
     }
     static async addComment(parent, { Comment, Auth } = {}) {
         const auth = new Authentication(Auth);
@@ -46,6 +50,12 @@ class CommentResolver {
         await comment.remove();
         return { Status: true }
     }
+}
+
+const commentLoader = new DataLoader(postIds => myBatchComments(postIds));
+async function myBatchComments(postIds){
+    const comments = await new CommentModel().comments.find({ PostId: { $in: postIds  } }).lean().exec();
+    return comments.length ? comments.map(comment => ({ ...comment, Id: comment._id })) : postIds.map(postId => comments[postId]);
 }
 
 module.exports = CommentResolver;

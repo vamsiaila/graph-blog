@@ -1,6 +1,7 @@
 const UserModel = require('../../models/users.model');
 const Authentication = require('../../shared/authentication');
 const jwt = require('jsonwebtoken');
+const DataLoader = require('dataloader');
 
 class UserResolver {
     static async getProfile({ PostedBy, CommentedBy } = {}, { UserId, Auth } = {}) {
@@ -14,6 +15,10 @@ class UserResolver {
         }
         User.Id = User._id;
         return User;
+    }
+
+    static async loadUser({ PostedBy, CommentedBy } = {}) {
+        return userLoader.load(PostedBy || CommentedBy);
     }
 
     static async register(parent, { UserData } = {}) {
@@ -39,6 +44,12 @@ class UserResolver {
             UserId: user._id
         };
     }
+}
+
+const userLoader = new DataLoader(userIds => myBatchUsers(userIds));
+async function myBatchUsers(userIds){
+    const users = await new UserModel().users.find({ _id: { $in: userIds } }).lean().exec();
+    return users.map(user => ({ ...user, Id: user._id }));
 }
 
 module.exports = UserResolver;

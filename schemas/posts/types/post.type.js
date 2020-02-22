@@ -19,11 +19,11 @@ module.exports = new GraphQLObjectType({
             Body: { type: GraphQLString },
             PostedBy: {
                 type: userType,
-                resolve: UserResolver.getProfile
+                resolve: UserResolver.loadUser
             },
             Comments: {
                 type: GraphQLList(CommentType),
-                resolve: CommentResolver.getComments
+                resolve: CommentResolver.loadComments
             },
             CreatedAt: { type: GraphQLFloat },
             UpdatedAt: { type: GraphQLFloat }

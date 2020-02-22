@@ -1,6 +1,7 @@
 const PostsModel = require('../../models/posts.model');
 const CommentModel = require('../../models/comments.model');
 const Authentication = require('../../shared/authentication');
+const DataLoader = require('dataloader');
 
 class PostResolver {
     static async getPosts({ _id: UserId } = {}, { PostedBy, Auth } = {}) {
@@ -25,6 +26,10 @@ class PostResolver {
         }
         post.Id = PostId;
         return post;
+    }
+
+    static async loadPost({ PostId } = {}) {
+        return await postLoader.load(PostId);
     }
 
     static async addPost(parent, { Post, Auth } = {}){
@@ -75,6 +80,12 @@ class PostResolver {
         await new CommentModel().comments.deleteMany({ PostId: PostId }).lean().exec();
         return { Status: true };
     }
+}
+
+const postLoader = new DataLoader(postIds => myBatchPosts(postIds));
+async function myBatchPosts(postIds){
+    const posts = await new PostsModel().posts.find({ $in: postIds }).lean().exec();
+    return posts.map(post => ({ ...post, Id: post._id }));
 }
 
 module.exports  = PostResolver;
