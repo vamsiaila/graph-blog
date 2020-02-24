@@ -1,6 +1,6 @@
 module.exports = (req, res, next) => {
     res.send = (data) => {
-        res.write(data);
+        res.write(typeof data === 'object' ? JSON.stringify(data) : data);
         res.end();
         // const query = req.body.query;
         // const queryType = query.startsWith('\nmutation') ? 'mutation' : 'query';
